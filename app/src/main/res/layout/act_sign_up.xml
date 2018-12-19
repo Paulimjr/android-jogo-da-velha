@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/SplashTheme"
+    android:paddingTop="65dp"
+    tools:context=".Main">
+
+    <TextView
+        android:paddingTop="65dp"
+        android:layout_marginTop="45dp"
+        android:textColor="@color/colorBlack"
+        android:id="@+id/name_game"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="@string/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/edt_name"
+        android:hint="@string/hint_name"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name_game"/>
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:hint="@string/hint_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_below="@+id/edt_name"/>
+
+
+    <EditText
+        android:layout_marginTop="8dp"
+        android:id="@+id/edt_password"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edt_email"/>
+
+    <Button
+        android:elevation="4dp"
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/edt_password"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/colorWhite"
+        android:text="@string/title_button_create"
+        android:background="@drawable/shape_button"
+        tools:targetApi="lollipop" />
+
+    <ProgressBar
+        android:id="@+id/progress_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnCreateAccount"
+        android:layout_marginTop="18dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+
+</RelativeLayout>

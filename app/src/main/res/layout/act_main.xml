@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/SplashTheme"
+    tools:context=".Main">
+
+    <TextView
+        android:id="@+id/text_logout"
+        android:text="Sair"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:padding="6dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_logged"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:layout_marginStart="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_logged_email"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:layout_below="@+id/text_logged"
+        android:textSize="12sp"
+        android:layout_marginStart="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_marginBottom="6dp"
+        android:layout_centerInParent="true"
+        android:layout_above="@+id/name_game"
+        android:id="@+id/img_slash"
+        android:src="@drawable/ic_app"
+        android:layout_width="150dp"
+        android:layout_height="150dp" />
+
+    <TextView
+        android:textColor="@color/colorBlack"
+        android:id="@+id/name_game"
+        android:textStyle="bold"
+        android:textSize="22sp"
+        android:text="@string/app_name"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:paddingBottom="6dp"
+        android:id="@+id/title_find_players"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/name_game"
+        android:text="@string/title_find_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <EditText
+        android:id="@+id/edt_search_user"
+        android:layout_below="@+id/title_find_players"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:hint="@string/hint_search_by_email"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"/>
+
+    <Button
+        android:id="@+id/btn_search_email"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="12dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/edt_search_user"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/colorWhite"
+        android:text="@string/title_button_search"
+        android:background="@drawable/shape_button"
+        tools:targetApi="lollipop" />
+
+</RelativeLayout>

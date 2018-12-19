@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1053169903534",
+    "firebase_url": "https://jogo-da-velha-70d56.firebaseio.com",
+    "project_id": "jogo-da-velha-70d56",
+    "storage_bucket": "jogo-da-velha-70d56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053169903534:android:406d0d2a55d58230",
+        "android_client_info": {
+          "package_name": "br.com.jogo.velha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053169903534-vcqse8361lcsqjlkgv60tiku0cc4rt2c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.jogo.velha",
+            "certificate_hash": "d4456841c173264b4b74cb6cc88318666e7767db"
+          }
+        },
+        {
+          "client_id": "1053169903534-k1aamuvngq69kvirb5mfapgpjabt0so1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA2GjMR3YzBrvbUozyGoVefPI7HLfzMig"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053169903534-k1aamuvngq69kvirb5mfapgpjabt0so1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
