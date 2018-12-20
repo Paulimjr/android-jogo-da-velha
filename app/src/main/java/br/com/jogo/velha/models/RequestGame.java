@@ -1,5 +1,7 @@
 package br.com.jogo.velha.models;
 
+import java.util.List;
+
 /**
  * Created by paulo.
  * Date: 11/12/18
@@ -11,14 +13,18 @@ public class RequestGame {
     private String playerOne;
     private String playerTwo;
     private String actualPlayer;
-    private String empates;
-    private String vitorias;
-    private String derrotas;
+    private Integer empates;
+    private Integer vitorias;
+    private Integer derrotas;
     private String progress;
     private String simbolo;
+    private List<String> tabu;
+    private Integer vitX;
+    private Integer vitO;
 
     public RequestGame(String playerOne, String playerTwo, String actualPlayer,
-                       String empates, String vitorias, String derrotas, String progress, String simbolo) {
+                       Integer empates, Integer vitorias, Integer derrotas, String progress, String simbolo,
+                       List<String> tabu, Integer vitX, Integer vitO) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.actualPlayer = actualPlayer;
@@ -27,9 +33,22 @@ public class RequestGame {
         this.derrotas = derrotas;
         this.progress = progress;
         this.simbolo = simbolo;
+        this.tabu = tabu;
+        this.vitO = vitO;
+        this.vitX = vitX;
     }
 
     public RequestGame() {
+
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public RequestGame setKey(String key) {
+        this.key = key;
+        return this;
     }
 
     public String getPlayerOne() {
@@ -59,39 +78,30 @@ public class RequestGame {
         return this;
     }
 
-    public String getEmpates() {
+    public Integer getEmpates() {
         return empates;
     }
 
-    public RequestGame setEmpates(String empates) {
+    public RequestGame setEmpates(Integer empates) {
         this.empates = empates;
         return this;
     }
 
-    public String getVitorias() {
+    public Integer getVitorias() {
         return vitorias;
     }
 
-    public RequestGame setVitorias(String vitorias) {
+    public RequestGame setVitorias(Integer vitorias) {
         this.vitorias = vitorias;
         return this;
     }
 
-    public String getDerrotas() {
+    public Integer getDerrotas() {
         return derrotas;
     }
 
-    public RequestGame setDerrotas(String derrotas) {
+    public RequestGame setDerrotas(Integer derrotas) {
         this.derrotas = derrotas;
-        return this;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public RequestGame setKey(String key) {
-        this.key = key;
         return this;
     }
 
@@ -110,6 +120,33 @@ public class RequestGame {
 
     public RequestGame setSimbolo(String simbolo) {
         this.simbolo = simbolo;
+        return this;
+    }
+
+    public List<String> getTabu() {
+        return tabu;
+    }
+
+    public RequestGame setTabu(List<String> tabu) {
+        this.tabu = tabu;
+        return this;
+    }
+
+    public Integer getVitX() {
+        return vitX;
+    }
+
+    public RequestGame setVitX(Integer vitX) {
+        this.vitX = vitX;
+        return this;
+    }
+
+    public Integer getVitO() {
+        return vitO;
+    }
+
+    public RequestGame setVitO(Integer vitO) {
+        this.vitO = vitO;
         return this;
     }
 }

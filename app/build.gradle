@@ -22,6 +22,10 @@ android {
             buildConfigField "String", "BASE_URL", '"https://snack-game.herokuapp.com/velha/"'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {

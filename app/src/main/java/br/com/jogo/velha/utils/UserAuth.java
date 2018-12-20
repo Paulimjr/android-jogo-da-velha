@@ -15,6 +15,8 @@ public class UserAuth {
     private SharedPreferences preferences;
     private String userLogged;
     private static final String UserAuth = "UserAuth";
+    private static final String player = "player";
+    private static final String tabu = "tabu";
 
     public UserAuth(Context context) {
         this.preferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
@@ -31,6 +33,40 @@ public class UserAuth {
         loadValues();
     }
 
+    public void savePlayer(String value) {
+        if ((value != null) && (!value.isEmpty())) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(player, value);
+            editor.apply();
+        }
+
+        loadPlayer();
+    }
+
+    public void saveTabu(String value) {
+        if ((value != null) && (!value.isEmpty())) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(tabu, value);
+            editor.apply();
+        }
+
+        loadTabu();
+    }
+
+    private String loadPlayer() {
+        if (preferences.contains(player)) {
+            return preferences.getString(player, "");
+        }
+        return "";
+    }
+
+    private String loadTabu() {
+        if (preferences.contains(tabu)) {
+            return preferences.getString(tabu, "");
+        }
+        return "";
+    }
+
     private String loadValue() {
         if (preferences.contains(UserAuth)) {
             return preferences.getString(UserAuth, "");
@@ -40,6 +76,7 @@ public class UserAuth {
 
     public void logout() {
         preferences.edit().remove(UserAuth).apply();
+        preferences.edit().remove(player).apply();
         preferences.edit().clear().apply();
     }
 
@@ -51,7 +88,15 @@ public class UserAuth {
         return userLogged;
     }
 
+    public String player() {
+        return loadPlayer();
+    }
+
     public User getUser() {
         return Utils.jsonToUser(getUserLogged());
+    }
+
+    public String getTabu() {
+        return loadTabu();
     }
 }

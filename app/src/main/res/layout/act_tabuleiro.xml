@@ -29,7 +29,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"
                     android:id="@+id/text_name_player_one"
-                    android:text="JOGADOR 0"
+                    android:text="JOGADOR 1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
@@ -87,7 +87,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"
                     android:id="@+id/text_name_player_two"
-                    android:text="JOGADOR X"
+                    android:text="JOGADOR 2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 

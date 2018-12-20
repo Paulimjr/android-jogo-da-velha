@@ -22,12 +22,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+
 import br.com.jogo.velha.models.JsonResponse;
 import br.com.jogo.velha.models.RequestGame;
+import br.com.jogo.velha.models.Tabu;
 import br.com.jogo.velha.models.User;
 import br.com.jogo.velha.services.LoginService;
 import br.com.jogo.velha.services.LoginServiceListener;
 import br.com.jogo.velha.utils.Constants;
+import br.com.jogo.velha.utils.TabuValidate;
 import br.com.jogo.velha.utils.UserAuth;
 import br.com.jogo.velha.utils.Utils;
 import butterknife.BindView;
@@ -166,10 +170,18 @@ implements LoginServiceListener {
 
     private void callServiceRequestUser(User data) {
         User playOne = new UserAuth(this).getUser();
-        RequestGame requestGame = new RequestGame(playOne.getEmail(), data.getEmail(), playOne.getEmail(), "0", "0", "0", WAITING, Constants.PLAY_O);
+        Tabu tabu = new TabuValidate(this).initial();
+
+        RequestGame requestGame = new RequestGame(playOne.getEmail(), data.getEmail(),
+                Constants.PLAY_O, 0,0,0, WAITING, Constants.PLAY_O, Arrays.asList(tabu.getTabu()), 0, 0);
         keyGame = this.databaseReference.push().getKey();
         requestGame.setKey(keyGame);
         this.databaseReference.setValue(requestGame);
+        saveMyPlay(Constants.PLAY_O);
+    }
+
+    private void saveMyPlay(String value) {
+        new UserAuth(this).savePlayer(value);
     }
 
     private void updatePartidas() {
@@ -223,14 +235,17 @@ implements LoginServiceListener {
             }
         };
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(false);
-        builder.setMessage("Aceitar solicitação de Jogo?").setPositiveButton("Sim",
-                dialogClickListener)
-                .setNegativeButton("Não", dialogClickListener).show();
+        if (!isFinishing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setCancelable(false);
+            builder.setMessage("Aceitar solicitação de Jogo?").setPositiveButton("Sim",
+                    dialogClickListener)
+                    .setNegativeButton("Não", dialogClickListener).show();
+        }
     }
 
     private void confirmGame() {
+        saveMyPlay(Constants.PLAY_X);
         this.databaseReference.child("progress").setValue(ACCEPTED);
     }
 

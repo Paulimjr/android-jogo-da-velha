@@ -2,6 +2,8 @@ package br.com.jogo.velha.utils;
 
 import android.app.Activity;
 
+import java.util.Arrays;
+
 import br.com.jogo.velha.models.Tabu;
 
 /**

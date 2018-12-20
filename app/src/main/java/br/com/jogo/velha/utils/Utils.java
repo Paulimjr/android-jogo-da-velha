@@ -4,6 +4,11 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.jogo.velha.models.Tabu;
 import br.com.jogo.velha.models.User;
@@ -48,6 +53,23 @@ public class Utils {
             return new Gson().toJson(tabu);
         } else{
             return "";
+        }
+    }
+
+    public static String tabuListToJson(List<String> value) {
+        if (value != null) {
+            return new Gson().toJson(value);
+        } else{
+            return "";
+        }
+    }
+
+    public static String getTabuList(String jsonList) {
+        if (jsonList != null) {
+            Type listType = new TypeToken<ArrayList<String>>(){}.getType();
+            return  new Gson().fromJson(jsonList, listType);
+        } else{
+            return null;
         }
     }
 }
