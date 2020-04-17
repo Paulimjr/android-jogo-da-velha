@@ -93,21 +93,18 @@ public class SignUp extends AppCompatActivity implements LoginServiceListener {
 
     public void saveFireBase(final User user, final String message) {
         this.firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful())   {
-                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                            if (firebaseUser != null) {
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful())   {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
 
-                                userId = databaseReference.push().getKey();
-                                new LoginService(SignUp.this).updateUuid(user.getEmail(), userId);
+                            userId = databaseReference.push().getKey();
+                            new LoginService(SignUp.this).updateUuid(user.getEmail(), userId);
 
-                                user.setUuid(userId);
-                                user.setRequestToGame(Constants.REQUEST_INACTIVE);
-                                databaseReference.child("users").child(userId).setValue(user);
-                                backLoginActivity(message);
-                            }
+                            user.setUuid(userId);
+                            user.setRequestToGame(Constants.REQUEST_INACTIVE);
+                            databaseReference.child("users").child(userId).setValue(user);
+                            backLoginActivity(message);
                         }
                     }
                 });

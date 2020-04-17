@@ -105,6 +105,7 @@ public class LoginService implements ILoginService {
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 listener.hideLoading();
+                listener.errorServer(t.getMessage());
                 Log.v("Error: ", t.getMessage());
             }
         });

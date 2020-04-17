@@ -9,10 +9,12 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import br.com.jogo.velha.BuildConfig;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -28,12 +30,16 @@ public class APIClient {
 
     public APIClient(@NonNull Context context, @NonNull String baseUrl) {
 
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         okHttpClient = new OkHttpClient()
                 .newBuilder()
                 .addInterceptor(checkConnectionInterceptor)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(checkConnectionInterceptor)
+                .addInterceptor(interceptor)
                 .build();
 
         retrofit = new Retrofit
