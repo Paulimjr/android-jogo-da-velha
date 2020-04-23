@@ -67,7 +67,7 @@ public class LoginService implements ILoginService {
         listener.showLoading();
 
         UserAPI userAPI = this.apiClient.getRetrofit().create(UserAPI.class);
-        Call<JsonResponse> loginResponse = userAPI.findByEmail(email);
+        Call<JsonResponse> loginResponse = userAPI.findByEmail(email.trim().toLowerCase());
 
         loginResponse.enqueue(new Callback<JsonResponse>() {
             @Override

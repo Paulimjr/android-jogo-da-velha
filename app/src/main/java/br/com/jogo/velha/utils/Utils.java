@@ -1,6 +1,7 @@
 package br.com.jogo.velha.utils;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -10,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.jogo.velha.VelhaApplication;
 import br.com.jogo.velha.models.Tabu;
 import br.com.jogo.velha.models.User;
 
@@ -19,6 +21,11 @@ import br.com.jogo.velha.models.User;
  * Time: 14:26
  */
 public class Utils {
+
+    public static boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) VelhaApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
 
     public static void showMessage(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();

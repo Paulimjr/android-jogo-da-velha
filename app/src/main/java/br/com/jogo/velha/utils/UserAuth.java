@@ -17,6 +17,7 @@ public class UserAuth {
     private static final String UserAuth = "UserAuth";
     private static final String player = "player";
     private static final String tabu = "tabu";
+    private String gameKey = "gameKey";
 
     public UserAuth(Context context) {
         this.preferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
@@ -33,6 +34,16 @@ public class UserAuth {
         loadValues();
     }
 
+    public void save(String key, String value){
+        if ((value != null) && (!value.isEmpty())) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(key, value);
+            editor.apply();
+        }
+
+        loadValues();
+    }
+
     public void savePlayer(String value) {
         if ((value != null) && (!value.isEmpty())) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -41,6 +52,14 @@ public class UserAuth {
         }
 
         loadPlayer();
+    }
+
+    public void remove(String key) {
+        if ((key != null) && (!key.isEmpty())) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.remove(key);
+            editor.apply();
+        }
     }
 
     public void saveTabu(String value) {
@@ -53,7 +72,7 @@ public class UserAuth {
         loadTabu();
     }
 
-    private String loadPlayer() {
+    public String loadPlayer() {
         if (preferences.contains(player)) {
             return preferences.getString(player, "");
         }
@@ -63,6 +82,13 @@ public class UserAuth {
     private String loadTabu() {
         if (preferences.contains(tabu)) {
             return preferences.getString(tabu, "");
+        }
+        return "";
+    }
+
+    public String loadGameKey() {
+        if (preferences.contains(gameKey)) {
+            return preferences.getString(gameKey, "");
         }
         return "";
     }
@@ -90,6 +116,10 @@ public class UserAuth {
 
     public String player() {
         return loadPlayer();
+    }
+
+    public String getGameKey() {
+        return gameKey;
     }
 
     public User getUser() {

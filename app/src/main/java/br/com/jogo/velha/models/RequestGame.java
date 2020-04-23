@@ -12,6 +12,8 @@ public class RequestGame {
     private String key;
     private String playerOne;
     private String playerTwo;
+    private String playerOneName;
+    private String playerTwoName;
     private String actualPlayer;
     private Integer empates;
     private Integer vitorias;
@@ -22,9 +24,11 @@ public class RequestGame {
     private Integer vitX;
     private Integer vitO;
 
-    public RequestGame(String playerOne, String playerTwo, String actualPlayer,
+    public RequestGame(String playerOneName, String playerTwoName, String playerOne, String playerTwo, String actualPlayer,
                        Integer empates, Integer vitorias, Integer derrotas, String progress, String simbolo,
                        List<String> tabu, Integer vitX, Integer vitO) {
+        this.playerOneName = playerOneName;
+        this.playerTwoName = playerTwoName;
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
         this.actualPlayer = actualPlayer;
@@ -148,5 +152,13 @@ public class RequestGame {
     public RequestGame setVitO(Integer vitO) {
         this.vitO = vitO;
         return this;
+    }
+
+    public String getPlayerOneName() {
+        return playerOneName;
+    }
+
+    public String getPlayerTwoName() {
+        return playerTwoName;
     }
 }

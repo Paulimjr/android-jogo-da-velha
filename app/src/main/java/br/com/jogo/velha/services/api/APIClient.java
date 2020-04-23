@@ -50,28 +50,17 @@ public class APIClient {
                 .build();
     }
 
-    private final Interceptor checkConnectionInterceptor = new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request original = chain.request();
-            Request request = original.newBuilder()
-                    .header("Content-Type", "application/json")
-                    .method(original.method(),original.body())
-                    .build();
-            return chain.proceed(request);
-        }
+    private final Interceptor checkConnectionInterceptor = chain -> {
+        Request original = chain.request();
+        Request request = original.newBuilder()
+                .header("Content-Type", "application/json")
+                .method(original.method(),original.body())
+                .build();
+        return chain.proceed(request);
     };
 
     public Retrofit getRetrofit() {
         return retrofit;
-    }
-
-    public OkHttpClient getOkHttpClient() {
-        return okHttpClient;
-    }
-
-    public Picasso getPicasso() {
-        return picasso;
     }
 
 }

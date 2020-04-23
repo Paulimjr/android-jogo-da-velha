@@ -8,10 +8,11 @@
 
     <RelativeLayout
         android:id="@+id/layout_info"
-        android:padding="8dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
-        android:layout_height="wrap_content">
+        android:padding="8dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,92 +20,103 @@
 
             <!-- PLAYER ONE -->
             <LinearLayout
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
                     android:id="@+id/text_name_player_one"
-                    android:text="JOGADOR 1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/name_player_one"
                     android:layout_width="wrap_content"
-                    android:textSize="10sp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp" />
 
                 <TextView
-                    android:textColor="@color/colorWhite"
                     android:id="@+id/point_player_one"
-                    android:text="0"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/colorWhite" />
 
 
             </LinearLayout>
 
             <!-- EMPATES -->
             <LinearLayout
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
                     android:id="@+id/text_name_empate"
-                    android:text="Empates"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Empates"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/text_name_empate_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/timeToPlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:30"
                     android:textColor="@color/colorWhite"
-                    android:text="0" />
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="00:30" />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
-                    android:textStyle="bold"
-                    android:textColor="@color/colorWhite"
                     android:id="@+id/text_name_player_two"
-                    android:text="JOGADOR 2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="..."
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:textColor="@color/colorWhite"
-                    android:textSize="10sp"
                     android:id="@+id/name_player_two"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="10sp" />
 
                 <TextView
-                    android:textColor="@color/colorWhite"
-                    android:layout_below="@+id/name_player_one"
                     android:id="@+id/point_player_two"
-                    android:text="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/name_player_one"
+                    android:text="1"
+                    android:textColor="@color/colorWhite" />
 
             </LinearLayout>
 
@@ -112,176 +124,219 @@
 
     </RelativeLayout>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/frameWinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_info"
+        android:layout_centerVertical="true"
+        android:layout_above="@+id/layout_buttons_info"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <!-- Custom Action Bar -->
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lav_actionBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/confetti"/>
+
+        <TextView
+            android:id="@+id/tvWinner"
+            android:layout_width="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:fontFamily="@font/montserrat_regular"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:text="Você venceu!"/>
+
+    </android.support.constraint.ConstraintLayout>
+
     <!-- Tabuleiro -->
     <RelativeLayout
-        android:layout_below="@+id/layout_info"
-        android:layout_above="@+id/layout_buttons_info"
         android:layout_width="match_parent"
-        android:padding="6dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_buttons_info"
+        android:layout_below="@+id/layout_info"
+        android:padding="6dp">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:background="#dcdcdc"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#dcdcdc"
+            android:orientation="vertical">
 
             <!-- Line 1 -->
             <LinearLayout
-                android:layout_margin="2dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
                 android:id="@+id/line_one"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:padding="25dp"
-                    android:textColor="@color/colorBlack"
-                    android:layout_margin="2dp"
-                    android:background="@color/colorWhite"
-                    android:layout_weight="1"
                     android:id="@+id/tab_one"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:textColor="@color/colorBlack"
+                    android:layout_height="match_parent"
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tab_two"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:textColor="@color/colorBlack"
-                    android:layout_margin="2dp"
-                    android:background="@color/colorWhite"
-                    android:layout_weight="1"
                     android:id="@+id/tab_three"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <!-- Line 2 -->
             <LinearLayout
-                android:layout_marginLeft="1dp"
-                android:layout_marginRight="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginBottom="1dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
                 android:id="@+id/line_two"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:textColor="@color/colorBlack"
-                    android:layout_marginRight="2dp"
-                    android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="2dp"
-                    android:background="@color/colorWhite"
-                    android:layout_weight="1"
                     android:id="@+id/tab_four"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:textColor="@color/colorBlack"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
                     android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="2dp"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tab_five"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:textColor="@color/colorBlack"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
                     android:layout_marginRight="2dp"
                     android:layout_marginBottom="1dp"
-                    android:layout_marginLeft="2dp"
-                    android:background="@color/colorWhite"
                     android:layout_weight="1"
-                    android:id="@+id/tab_six"
+                    android:background="@color/colorWhite"
                     android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tab_six"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <!-- Line 3 -->
             <LinearLayout
-                android:layout_margin="2dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
                 android:id="@+id/line_three"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_margin="2dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
-                    android:textColor="@color/colorBlack"
-                    android:layout_margin="2dp"
-                    android:background="@color/colorWhite"
-                    android:layout_weight="1"
                     android:id="@+id/tab_seven"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:textAlignment="center"
-                    android:textStyle="bold"
-                    android:textSize="64sp"
+                    android:layout_height="match_parent"
                     android:layout_margin="2dp"
-                    android:textColor="@color/colorBlack"
                     android:layout_weight="1"
                     android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tab_eight"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:padding="25dp"
                     android:textAlignment="center"
-                    android:textStyle="bold"
                     android:textColor="@color/colorBlack"
                     android:textSize="64sp"
-                    android:layout_margin="2dp"
-                    android:background="@color/colorWhite"
-                    android:layout_weight="1"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tab_nine"
-                    android:padding="25dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorWhite"
+                    android:padding="25dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="64sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -291,10 +346,10 @@
 
     <!-- Botoes do game -->
     <RelativeLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/layout_buttons_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -303,13 +358,13 @@
 
             <Button
                 android:id="@+id/btn_left_game"
-                android:background="@drawable/shape_button"
-                android:textColor="@color/colorWhite"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:text="@string/title_left_game"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_button"
+                android:text="@string/title_left_game"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

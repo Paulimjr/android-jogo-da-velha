@@ -39,4 +39,5 @@
     <string name="searching">Buscando jogador...</string>
     <string name="no_search_myself">Você não pode buscar e jogar com você mesmo!</string>
     <string name="default_notification_channel_id">8887826618435967631</string>
+    <string name="default_no_internet">Verifique sua conexão com a internet, tente novamente!</string>
 </resources>

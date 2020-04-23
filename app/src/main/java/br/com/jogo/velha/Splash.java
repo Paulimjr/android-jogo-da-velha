@@ -15,12 +15,10 @@ public class Splash extends AppCompatActivity {
     }
 
     private void openMainActivity() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        new Handler().postDelayed(() -> {
+//            startActivity(new Intent(Splash.this, Tabuleiro.class));
                 startActivity(new Intent(Splash.this, LoginActivity.class));
-                finish();
-            }
+            finish();
         }, 2400);
     }
 }

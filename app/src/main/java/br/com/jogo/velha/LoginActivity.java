@@ -3,7 +3,6 @@ package br.com.jogo.velha;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +11,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -47,19 +42,16 @@ public class LoginActivity extends AppCompatActivity implements LoginServiceList
     @BindView(R.id.edt_password)
     EditText mPassword;
 
-    private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private User user;
     private UserAuth userAuth;
     private ProgressDialog dialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_login);
         ButterKnife.bind(this);
-        this.databaseReference = FirebaseDatabase.getInstance().getReference();
         this.firebaseAuth = FirebaseAuth.getInstance();
         this.userAuth = new UserAuth(this);
         isLogged();
@@ -95,13 +87,17 @@ public class LoginActivity extends AppCompatActivity implements LoginServiceList
             return;
         }
 
-        login();
+        if (!Utils.isNetworkConnected()) {
+            Toast.makeText(this, getString(R.string.default_no_internet), Toast.LENGTH_SHORT).show();
+        } else {
+            login();
+        }
     }
 
     private void login() {
         loading();
-        user = new User(mUsername.getText().toString(), (mPassword.getText().toString()+PASSWORD_CRYPTO));
-        this.firebaseAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword())
+        user = new User(mUsername.getText().toString().toLowerCase().trim(), (mPassword.getText().toString()+PASSWORD_CRYPTO));
+        this.firebaseAuth.signInWithEmailAndPassword(user.getEmail().toLowerCase().trim(), user.getPassword())
                 .addOnCompleteListener(this, task -> {
                     hideLoading();
 
@@ -149,7 +145,9 @@ public class LoginActivity extends AppCompatActivity implements LoginServiceList
 
     private void saveDevice(FirebaseUser firebaseUser) {
         this.user.setUuid(firebaseUser.getUid());
-        new LoginService(this).findByEmail(firebaseUser.getEmail());
+        if (firebaseUser.getEmail() != null) {
+            new LoginService(this).findByEmail(firebaseUser.getEmail());
+        }
     }
 
     public void openMain() {

@@ -1,19 +1,29 @@
 package br.com.jogo.velha;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -52,21 +62,23 @@ public class Tabuleiro extends AppCompatActivity {
     @BindView(R.id.tab_eight) TextView mValue7;
     @BindView(R.id.tab_nine) TextView mValue8;
     @BindView(R.id.btn_left_game) Button btnLeftGame;
+    @BindView(R.id.text_name_player_one) TextView mPlayOneEffect;
+    @BindView(R.id.text_name_player_two) TextView mPlayTwoEffect;
 
     //PLAYERS
     @BindView(R.id.name_player_one) TextView mPlayerOne;
     @BindView(R.id.name_player_two) TextView mPlayerTwo;
     //Empate
     @BindView(R.id.text_name_empate_value) TextView mEmpates;
-    @BindView(R.id.point_player_one) TextView mVitoriasX;
-    @BindView(R.id.point_player_two) TextView mVitoriasO;
-
+    @BindView(R.id.point_player_one) TextView mVitoriasO;
+    @BindView(R.id.point_player_two) TextView mVitoriasX;
+    @BindView(R.id.timeToPlay) TextView mTimeToPlay;
+    @BindView(R.id.frameWinner) View frameWinner;
+    @BindView(R.id.tvWinner) TextView tvWinner;
+    @BindView(R.id.lav_actionBar) LottieAnimationView animWinner;
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
-    private UserAuth userAuth;
-
-    private ProgressDialog dialog;
     private FirebaseDatabase firebaseDatabase;
     private final String PARTIDAS = "partidas";
 
@@ -80,12 +92,14 @@ public class Tabuleiro extends AppCompatActivity {
     private String keyGame;
 
     private String F_ACTUAL_PLAYER = "actualPlayer";
-    private String F_SYMBOL = "simbolo";
     private String F_TABU = "tabu";
     private String F_PROGRESS = "progress";
     private String F_VIT_X = "vitX";
     private String F_VIT_O = "vitO";
     private String F_EMPATES = "empates";
+    private ObjectAnimator animator;
+    private UserAuth userAuth;
+    private boolean isWinner = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,23 +107,27 @@ public class Tabuleiro extends AppCompatActivity {
         setContentView(R.layout.act_tabuleiro);
         ButterKnife.bind(this);
         this.firebaseDatabase = FirebaseDatabase.getInstance();
-        this.databaseReference = this.firebaseDatabase.getReference(PARTIDAS);
+        this.userAuth = new UserAuth(this);
+
+        this.databaseReference = this.firebaseDatabase.getReference(PARTIDAS).child(userAuth.loadGameKey());
         this.firebaseAuth = FirebaseAuth.getInstance();
 
         this.tabuValidate = new TabuValidate(this);
         this.tabu = this.tabuValidate.initial();
-        listeners();
-        this.mPlayerOne.setText(new UserAuth(this).getUser().getName());
-        setupPlayers();
         this.btnLeftGame.setOnClickListener(view -> leftGame());
+
+        if (this.userAuth.getUser() != null) {
+            this.mPlayerOne.setText(userAuth.getUser().getName());
+        }
+
+        listeners();
+        checkIfHasGameRunning();
         updatePartidas();
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.databaseReference.child(F_PROGRESS).setValue(PROGRESS);
+    private void checkIfHasGameRunning() {
+        if (this.userAuth.loadGameKey() != null && !this.userAuth.loadGameKey().isEmpty())
+            this.databaseReference.child(F_PROGRESS).setValue(PROGRESS);
     }
 
     public void efetuarJogada(int position) {
@@ -123,18 +141,21 @@ public class Tabuleiro extends AppCompatActivity {
     }
 
     private void updateSharedPreferences(Tabu tabu) {
-        new UserAuth(this).saveTabu(Utils.tabuListToJson(Arrays.asList(tabu.getTabu())));
+        userAuth.saveTabu(Utils.tabuListToJson(Arrays.asList(tabu.getTabu())));
     }
 
     private void updatePlayers(Tabu tabu) {
         int hasWinner = this.tabuValidate.hasWinner(this.tabu.getTabu(), this.actualPlayers);
         if (hasWinner == 1) { // GANHADORES
+            isWinner = true;
             playerWinner(this.actualPlayers);
             this.tabuValidate.clearWinners();
         }
 
         hasWinner = this.tabuValidate.verificarNenhumVencedor(this.tabu.getTabu());
+
         if (hasWinner == 3) {
+            isWinner = false;
             Toast.makeText(this, "Nenhum jogador venceu!", Toast.LENGTH_SHORT).show();
             this.tabuValidate.clearWinners();
             this.clearValues();
@@ -145,7 +166,7 @@ public class Tabuleiro extends AppCompatActivity {
     }
 
     private void updateEmpates() {
-        Integer oldValue = Integer.parseInt(mEmpates.getText().toString());
+        int oldValue = Integer.parseInt(mEmpates.getText().toString());
         oldValue = oldValue + 1;
         this.databaseReference.child(F_EMPATES).setValue(oldValue);
         this.databaseReference.child(F_TABU).setValue(Arrays.asList(this.tabuValidate.initial().getTabu()));
@@ -161,9 +182,24 @@ public class Tabuleiro extends AppCompatActivity {
         this.databaseReference.child(F_ACTUAL_PLAYER).setValue(this.actualPlayers);
     }
 
+    @SuppressLint("WrongConstant")
+    private void effectActualPlayer(TextView view) {
+
+        if (animator != null) {
+            animator.cancel();
+        }
+
+        animator = ObjectAnimator.ofInt(view, "backgroundColor", getResources().getColor(R.color.colorPrimaryDark), Color.RED);
+        animator.setDuration(800);
+        animator.setEvaluator(new ArgbEvaluator());
+        animator.setRepeatMode(Animation.REVERSE);
+        animator.setRepeatCount(Animation.INFINITE);
+        animator.start();
+    }
+
     private void playerWinner(String actualPlayers) {
-        Toast.makeText(this, "O Jogador "+actualPlayers+" VENCEU!", Toast.LENGTH_SHORT).show();
-        new Handler().postDelayed(this::clearValues, 600);
+//        Toast.makeText(this, "O Jogador "+actualPlayers+" VENCEU!", Toast.LENGTH_SHORT).show();
+//        new Handler().postDelayed(this::clearValues, 800);
 
         this.databaseReference.child(F_TABU).setValue(Arrays.asList(this.tabuValidate.initial().getTabu()));
 
@@ -178,11 +214,32 @@ public class Tabuleiro extends AppCompatActivity {
             oldValue = oldValue + 1;
             this.databaseReference.child(F_VIT_O).setValue(oldValue);
         }
+
+
+        //Show winner animation
+        frameWinner.setVisibility(View.VISIBLE);
+        frameWinner.bringToFront();
+
+        if (userAuth.loadPlayer().equalsIgnoreCase(this.actualPlayers)) {
+            showPlayerWinner();
+        }
+
+        new Handler().postDelayed(this::clearValues, 1300);
+    }
+
+    private void showPlayerWinner() {
+        this.tvWinner.setVisibility(View.VISIBLE);
+        this.animWinner.setVisibility(View.VISIBLE);
     }
 
     private void clearValues() {
         this.tabu = this.tabuValidate.initial();
         updateView(Arrays.asList(this.tabu.getTabu()));
+
+        this.frameWinner.setVisibility(View.GONE);
+        this.tvWinner.setVisibility(View.GONE);
+        this.animWinner.setVisibility(View.GONE);
+        this.isWinner = false;
     }
 
     public boolean isActualPlayer() {
@@ -244,14 +301,10 @@ public class Tabuleiro extends AppCompatActivity {
                 dialogClickListener)
                 .setNegativeButton("Não", dialogClickListener).show();
     }
-
-
+    
     private void confirmLeftGame() {
-        this.databaseReference.setValue(null);
-    }
-
-    private void setupPlayers() {
-
+        this.firebaseDatabase.getReference(PARTIDAS).child(userAuth.loadGameKey()).setValue(null);
+        this.userAuth.remove(userAuth.getGameKey());
     }
 
     public void updatePartidas() {
@@ -263,7 +316,7 @@ public class Tabuleiro extends AppCompatActivity {
                     if (game.getProgress().equals(PROGRESS)) {
                         updateUi(game);
                     }
-                } else {
+                } else {//TODO remove this line
                     startActivity(new Intent(Tabuleiro.this, Main.class));
                     finish();
                 }
@@ -280,6 +333,9 @@ public class Tabuleiro extends AppCompatActivity {
         if (game != null) {
             this.mPlayerOne.setText(game.getPlayerOne());
             this.mPlayerTwo.setText(game.getPlayerTwo());
+            this.mPlayOneEffect.setText(game.getPlayerOneName());
+            this.mPlayTwoEffect.setText(game.getPlayerTwoName());
+
             this.actualPlayers = game.getActualPlayer();
             this.mEmpates.setText(String.valueOf(game.getEmpates()));
             this.mVitoriasX.setText(String.valueOf(game.getVitX()));
@@ -295,6 +351,20 @@ public class Tabuleiro extends AppCompatActivity {
                 }
 
                 this.tabu.setTabu(values);
+            }
+
+            //Remove all animations
+            if (animator != null) {
+                animator.cancel();
+            }
+
+            if (this.actualPlayers != null) {
+                // Change animation
+                if (this.actualPlayers.equals(Constants.PLAY_O)) {
+                    effectActualPlayer(this.mPlayOneEffect);
+                } else {
+                    effectActualPlayer(this.mPlayTwoEffect);
+                }
             }
         }
     }

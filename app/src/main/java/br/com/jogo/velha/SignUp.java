@@ -83,12 +83,17 @@ public class SignUp extends AppCompatActivity implements LoginServiceListener {
             return;
         }
 
-        saveRegister();
+        if (!Utils.isNetworkConnected()) {
+            Toast.makeText(this, getString(R.string.default_no_internet), Toast.LENGTH_SHORT).show();
+        } else {
+            saveRegister();
+        }
+
     }
 
     private void saveRegister() {
         new LoginService(this).requestCreate(
-                new RequestCreate(mName.getText().toString(), mEmail.getText().toString(), (mPassword.getText().toString()+PASSWORD_CRYPTO)));
+                new RequestCreate(mName.getText().toString(), mEmail.getText().toString().toLowerCase(), (mPassword.getText().toString()+PASSWORD_CRYPTO)));
     }
 
     public void saveFireBase(final User user, final String message) {
@@ -99,7 +104,7 @@ public class SignUp extends AppCompatActivity implements LoginServiceListener {
                         if (firebaseUser != null) {
 
                             userId = databaseReference.push().getKey();
-                            new LoginService(SignUp.this).updateUuid(user.getEmail(), userId);
+                            new LoginService(SignUp.this).updateUuid(user.getEmail().toLowerCase(), userId);
 
                             user.setUuid(userId);
                             user.setRequestToGame(Constants.REQUEST_INACTIVE);
